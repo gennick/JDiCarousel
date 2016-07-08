@@ -147,6 +147,8 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     _scrollToItemBoundary = YES;
     _ignorePerpendicularSwipes = YES;
     _centerItemWhenSelected = YES;
+    _panVelocityNextItem = 0;
+    _panVelocityPreviousItem = 0;
     
     _contentView = [[UIView alloc] initWithFrame:self.bounds];
     
@@ -2040,6 +2042,26 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
 {
     if ([gesture isKindOfClass:[UIPanGestureRecognizer class]])
     {
+        CGPoint velocity = [(UIPanGestureRecognizer *)gesture velocityInView:gesture.view];
+
+        CGFloat v = 0;
+        if (_vertical) {
+            v = velocity.y;
+        }
+        else {
+            v = velocity.x;
+        }
+
+        if (v <= 0 && fabs(v) > self.panVelocityNextItem) {
+            return YES;
+        }
+        else if (v >= 0 && v > self.panVelocityPreviousItem) {
+            return YES;
+        }
+        else {
+            return NO;
+        }
+
         //ignore vertical swipes
         UIPanGestureRecognizer *panGesture = (UIPanGestureRecognizer *)gesture;
         CGPoint translation = [panGesture translationInView:self];
