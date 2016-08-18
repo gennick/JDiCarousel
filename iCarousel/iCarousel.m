@@ -957,6 +957,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
             CGFloat width = _vertical ? self.bounds.size.height: self.bounds.size.width;
             CGFloat itemWidth = _itemWidth * spacing;
             _numberOfVisibleItems = ceil(width / itemWidth) + 2;
+            _numberOfVisibleItems = MAX_VISIBLE_ITEMS;
             break;
         }
         case iCarouselTypeCoverFlow:
